@@ -582,7 +582,7 @@ footer {
 
 .map-placeholder {
     height: 200px;
-    background: linear-gradient(135deg, #e8f4f8, #d4f1f4);
+    background: linear-gradient(135deg, #ffffff, #ffffff);
     border-radius: 10px;
     display: flex;
     align-items: center;
