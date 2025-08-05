@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <meta name="description" content="Pedribel Motors: Líder en venta y distribución de motocicletas y repuestos en Higüey, La Altagracia. Calidad, servicio y experiencia garantizada.">
-    <meta name="keywords" content="motocicletas, repuestos, Higüey, La Altagracia, República Dominicana, venta, distribución">
+    <meta name="keywords" content="motocicletas, repuestos, Higüey, La Altagracia, República Dominicana, venta, distribución, X1000, Suzuki">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" href="p_m_logo1.ico">
     <link rel="stylesheet" href="style.css">
@@ -17,9 +17,11 @@
     <!-- Header -->
     <header>
         <nav>
-            <a href="#home" class="logo">Pedribel Motors</a>
+            <a href="#home" class="logo-link">
+                <img src="p_m_logo-little.png" alt="Pedribel Motors Logo" class="logo-img">
+                <span class="logo-text">Pedribel Motors</span>
+            </a>
             <ul class="nav-links">
-                <li><a href="#home">Inicio</a></li>
                 <li><a href="#about">Nosotros</a></li>
                 <li><a href="#products">Productos</a></li>
                 <li><a href="#services">Servicios</a></li>
@@ -27,17 +29,35 @@
                 <li><a href="#locations">Sucursales</a></li>
                 <li><a href="#contact">Contacto</a></li>
             </ul>
-            <button class="mobile-menu" onclick="toggleMobileMenu()">
+            <button class="mobile-menu" id="mobile-menu-button">
                 <i class="fas fa-bars"></i>
             </button>
         </nav>
     </header>
 
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Cargando...</p>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>¡Mensaje Enviado!</h3>
+            <p>Gracias por contactarnos. Hemos recibido tu mensaje y te responderemos dentro de las próximas 24 horas.</p>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
             <h1>Pedribel Motors</h1>
-            <p>Líderes en venta y distribución de motocicletas y repuestos en Higüey, La Altagracia</p>
+            <p>Líderes en venta y distribución de motocicletas y repuestos en Higüey</p>
             <a href="#products" class="cta-button">Ver Productos</a>
         </div>
     </section>
@@ -57,7 +77,7 @@
                 <p>Ser la empresa líder en la distribución de motocicletas y repuestos en la región este de República Dominicana, reconocida por nuestra innovación, calidad y compromiso con la satisfacción del cliente.</p>
             </div>
             <div class="about-image">
-                <!-- Placeholder for company image -->
+                <!-- Company image placeholder -->
             </div>
         </div>
     </section>
@@ -65,50 +85,29 @@
     <!-- Products Section -->
     <section id="products">
         <h2 class="section-title">Nuestros Productos</h2>
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="s_x.png" alt="Motocicletas Deportivas">
-                </div>
-                <div class="product-info">
-                    <h3>Motocicletas Deportivas</h3>
-                    <p>Amplia gama de motocicletas deportivas de las mejores marcas del mercado. Potencia, diseño y tecnología en cada modelo.</p>
-                    <div class="product-price">Desde RD$ 85,000</div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="repuesto-moto.jpeg">
-                </div>
-                <div class="product-info">
-                    <h3>Repuestos Originales</h3>
-                    <p>Repuestos originales y de alta calidad para todas las marcas. Garantía y durabilidad asegurada.</p>
-                    <div class="product-price">Precios Competitivos</div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="accesorios.png">
-                </div>
-                <div class="product-info">
-                    <h3>Accesorios</h3>
-                    <p>Cascos, guantes, chaquetas y todos los accesorios necesarios para una conducción segura y cómoda.</p>
-                    <div class="product-price">Consultar Precios</div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="carga1.png">
-                </div>
-                <div class="product-info">
-                    <h3>Motocicletas de Trabajo</h3>
-                    <p>Motocicletas resistentes y confiables para uso comercial y de trabajo. Eficiencia y durabilidad garantizada.</p>
-                    <div class="product-price">Desde RD$ 65,000</div>
-                </div>
-            </div>
+        
+        <!-- Product Categories Filter -->
+        <div class="product-filter">
+            <button class="filter-btn active" data-category="all">Todos</button>
+            <button class="filter-btn" data-category="x1000">X1000</button>
+            <button class="filter-btn" data-category="suzuki">Suzuki</button>
+            <button class="filter-btn" data-category="repuestos">Repuestos</button>
+            <button class="filter-btn" data-category="accesorios">Accesorios</button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="product-search">
+            <input type="text" id="search-input" placeholder="Buscar productos...">
+            <button id="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="products-grid" id="products-grid">
+            <!-- Products will be loaded dynamically -->
+        </div>
+
+        <!-- Load More Button -->
+        <div class="load-more-container">
+            <button id="load-more-btn" class="cta-button">Cargar Más Productos</button>
         </div>
     </section>
 
@@ -159,8 +158,8 @@
                     <i class="fas fa-percent"></i>
                 </div>
                 <div class="blog-content">
-                    <div class="blog-date">13 de Julio, 2025</div>
-                    <h3 class="blog-title">Promoción de Verano 2025</h3>
+                    <div class="blog-date">Muy Pronto</div>
+                    <h3 class="blog-title">Promoción de Verano</h3>
                     <p class="blog-excerpt">Aprovecha nuestras increíbles ofertas de verano. Descuentos de hasta 15% en motocicletas seleccionadas y financiamiento sin inicial.</p>
                 </div>
             </div>
@@ -170,8 +169,8 @@
                     <i class="fas fa-star"></i>
                 </div>
                 <div class="blog-content">
-                    <div class="blog-date">10 de Julio, 2025</div>
-                    <h3 class="blog-title">Nuevos Modelos 2025</h3>
+                    <div class="blog-date">Muy Pronto</div>
+                    <h3 class="blog-title">Nuevos Modelos</h3>
                     <p class="blog-excerpt">Conoce los nuevos modelos que han llegado a nuestro showroom. Tecnología avanzada y diseño innovador en cada motocicleta.</p>
                 </div>
             </div>
@@ -181,7 +180,7 @@
                     <i class="fas fa-award"></i>
                 </div>
                 <div class="blog-content">
-                    <div class="blog-date">5 de Julio, 2025</div>
+                    <div class="blog-date">Muy Pronto</div>
                     <h3 class="blog-title">Reconocimiento Regional</h3>
                     <p class="blog-excerpt">Pedribel Motors recibe reconocimiento como el distribuidor más confiable de la región este. Gracias por confiar en nosotros.</p>
                 </div>
@@ -194,10 +193,11 @@
         <h2 class="section-title">Nuestras Sucursales</h2>
         <div class="location-grid">
             <div class="location-card">
-                <h3>Sucursal Higüey - Principal</h3>
+                <h3>Sucursal Principal - Higüey</h3>
                 <p><i class="fas fa-map-marker-alt"></i> Juan XXIII No. 110, Higüey, República Dominicana</p>
                 <p><i class="fas fa-phone"></i> (809) 554-5533</p>
                 <p><i class="fas fa-clock"></i> Lun-Vie: 8:00 AM - 6:00 PM</p>
+                <p><i class="fas fa-clock"></i> Sáb: 8:00 AM - 4:00 PM</p>
                 <div class="map-placeholder">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3480.9103061339615!2d-68.7192142!3d18.608111899999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ea8b759d78867a9%3A0x340f50926f498a14!2sPedribel%20Motors!5e1!3m2!1ses!2sdo!4v1752442764769!5m2!1ses!2sdo" width="280" height="200" style="border: 60px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
@@ -205,9 +205,10 @@
             
             <div class="location-card">
                 <h3>Sucursal Punta Cana</h3>
-                <p><i class="fas fa-map-marker-alt"></i> Blvd. Turistico del Este, Punta Cana</p>
+                <p><i class="fas fa-map-marker-alt"></i> Carretera Punta Cana #456, Punta Cana</p>
                 <p><i class="fas fa-phone"></i> (809) 554-0001</p>
                 <p><i class="fas fa-clock"></i> Lun-Vie: 8:00 AM - 6:00 PM</p>
+                <p><i class="fas fa-clock"></i> Sáb: 8:00 AM - 4:00 PM</p>
                 <div class="map-placeholder">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3493.9514909011955!2d-68.456451!3d18.692111999999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTjCsDQxJzMxLjYiTiA2OMKwMjcnMjMuMiJX!5e1!3m2!1ses!2sdo!4v1752536907649!5m2!1ses!2sdo" width="280" height="200" style="border:60px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
@@ -221,33 +222,51 @@
         <div class="contact-content">
             <div class="contact-form">
                 <h3>Envíanos un Mensaje</h3>
-                <form>
+                <form id="contact-form">
                     <div class="form-group">
-                        <label for="name">Nombre Completo</label>
+                        <label for="name">Nombre Completo *</label>
                         <input type="text" id="name" name="name" required>
+                        <span class="error-message"></span>
                     </div>
                     
                     <div class="form-group">
-                        <label for="email">Correo Electrónico</label>
+                        <label for="email">Correo Electrónico *</label>
                         <input type="email" id="email" name="email" required>
+                        <span class="error-message"></span>
                     </div>
                     
                     <div class="form-group">
                         <label for="phone">Teléfono</label>
                         <input type="tel" id="phone" name="phone">
+                        <span class="error-message"></span>
                     </div>
                     
                     <div class="form-group">
-                        <label for="subject">Asunto</label>
-                        <input type="text" id="subject" name="subject" required>
+                        <label for="subject">Asunto *</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Selecciona un asunto</option>
+                            <option value="informacion-productos">Información sobre productos</option>
+                            <option value="cotizacion">Solicitar cotización</option>
+                            <option value="servicio-tecnico">Servicio técnico</option>
+                            <option value="financiamiento">Opciones de financiamiento</option>
+                            <option value="repuestos">Consulta sobre repuestos</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                        <span class="error-message"></span>
                     </div>
                     
                     <div class="form-group">
-                        <label for="message">Mensaje</label>
-                        <textarea id="message" name="message" rows="5" required></textarea>
+                        <label for="message">Mensaje *</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="Describe tu consulta o solicitud..."></textarea>
+                        <span class="error-message"></span>
                     </div>
                     
-                    <button type="submit" class="cta-button">Enviar Mensaje</button>
+                    <button type="submit" class="cta-button" id="submit-btn">
+                        <span class="btn-text">Enviar Mensaje</span>
+                        <span class="btn-loader" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i> Enviando...
+                        </span>
+                    </button>
                 </form>
             </div>
             
@@ -300,7 +319,6 @@
     <footer>
         <div class="footer-content">
             <div class="footer-links">
-                <a href="#home">Inicio</a>
                 <a href="#about">Nosotros</a>
                 <a href="#products">Productos</a>
                 <a href="#services">Servicios</a>
