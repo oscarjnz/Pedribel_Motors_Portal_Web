@@ -938,19 +938,19 @@ footer {
 }
 
 .social-links {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
+    display: flex; /* Esto los pone en fila */
+    justify-content: center; /* Opcional: Centra los íconos horizontalmente */
+    gap: 1.5rem; /* Espacio entre los íconos */
     margin-bottom: 2rem;
 }
 
 .social-links a {
+    /* Estilos que son comunes a todos los íconos */
     display: flex;
     align-items: center;
     justify-content: center;
     width: 45px;
     height: 45px;
-    background: #ff1717;
     color: white;
     border-radius: 50%;
     text-decoration: none;
@@ -958,12 +958,65 @@ footer {
     font-size: 1.2rem;
 }
 
-.social-links a:hover {
-    transform: translateY(-3px) scale(1.1);
-    background: #ff4242;
-    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+/* --- ESTILOS ESPECÍFICOS PARA CADA ÍCONO --- */
+
+/* Facebook */
+.facebook-link {
+    background: #1877F2;
 }
 
+.facebook-link:hover {
+    transform: translateY(-3px) scale(1.1);
+    background: #3b5998;
+    box-shadow: 0 5px 15px #3b5998;
+}
+
+/* Instagram */
+.instagram-link {
+    background: radial-gradient(
+        circle at 33% 100%,
+        #fed373 4%,
+        #f15245 30%,
+        #d92e7f 62%,
+        #9b36b7 85%,
+        #515ecf
+    );
+}
+
+.instagram-link:hover {
+    transform: translateY(-3px) scale(1.1);
+    background: radial-gradient(
+        circle at 33% 100%,
+        #ffcb5b 4%,
+        #ed4637 30%,
+        #d82579 62%,
+        #9312b6 85%,
+        #1f31ce
+    );
+    box-shadow: 0 5px 15px rgba(255, 123, 205, 0.297);
+}
+
+/* X (Twitter) */
+.x-link {
+    background: #00acee;
+}
+
+.x-link:hover {
+    transform: translateY(-3px) scale(1.1);
+    background: #008fc8;
+    box-shadow: 0 5px 15px rgba(0, 112, 156, 0.7)
+}
+
+/* YouTube */
+.youtube-link {
+    background: #ff1717;
+}
+
+.youtube-link:hover {
+    transform: translateY(-3px) scale(1.1);
+    background: #ff0000;
+    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+}
 /* Loading Spinner */
 .loading-spinner {
     position: fixed;
@@ -1279,3 +1332,4 @@ html {
 ::-webkit-scrollbar-thumb:hover {
     background: #ff8c42;
 }
+
