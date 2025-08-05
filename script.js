@@ -1,231 +1,192 @@
-// Mobile menu toggle
-function toggleMobileMenu() {
-    const navLinks = document.querySelector('.nav-links');
-    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+document.addEventListener('DOMContentLoaded', () => {
+    // Ocultar el contenido principal hasta que todo esté listo para evitar parpadeos
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+        mainContent.style.visibility = 'hidden';
+    }
+    
+    // Iniciar la carga de productos y activar todos los listeners
+    initializePage();
+});
+
+function initializePage() {
+    fetchAndDisplayProducts(); // Carga inicial de todos los productos
+    setupEventListeners();
+    setupIntersectionObserver();
 }
 
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+function showPageContent() {
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const mainContent = document.getElementById('main-content');
+
+    if (loadingSpinner) {
+        loadingSpinner.style.display = 'none';
+    }
+    if (mainContent) {
+        mainContent.style.visibility = 'visible';
+        mainContent.style.opacity = '1';
+        mainContent.style.transition = 'opacity 0.5s ease-in-out';
+    }
+}
+
+async function fetchAndDisplayProducts(category = 'all', searchTerm = '') {
+    const productsGrid = document.getElementById('products-grid');
+    const apiUrl = `/api/products?category=${category}&search=${encodeURIComponent(searchTerm)}`;
+    
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+        const products = await response.json();
+        
+        productsGrid.innerHTML = ''; // Limpiar la parrilla
+        
+        if (products.length === 0) {
+            productsGrid.innerHTML = '<p class="no-products-message">No se encontraron productos que coincidan con tu búsqueda.</p>';
+        } else {
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card'; // Para el observer de animación
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-category">${product.category}</p>
+                        <p class="product-price">$${product.price.toLocaleString('es-DO')}</p>
+                        <button class="cta-button">Ver Detalles</button>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
             });
         }
-    });
-});
+    } catch (error) {
+        console.error('Error al cargar los productos:', error);
+        productsGrid.innerHTML = '<p class="error-message">Lo sentimos, no pudimos cargar los productos. Por favor, intenta de nuevo más tarde.</p>';
+    } finally {
+        // Una vez finalizada la carga (con éxito o error), mostramos el contenido.
+        showPageContent(); 
+        // Re-activar el observer para las nuevas tarjetas de producto creadas
+        setupIntersectionObserver();
+    }
+}
 
-// Form submission handler
-document.querySelector('form').addEventListener('submit', function(e) {
+async function handleFormSubmit(e) {
     e.preventDefault();
-    
-    // Get form data
-    const formData = new FormData(this);
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const phone = formData.get('phone');
-    const subject = formData.get('subject');
-    const message = formData.get('message');
-    
-    // Create WhatsApp message
-    const whatsappMessage = `Hola, soy ${name}. ${message}. Mi email es ${email} y mi teléfono es ${phone}.`;
-    const whatsappUrl = `https://wa.me/18095540000?text=${encodeURIComponent(whatsappMessage)}`;
-    
-    // Open WhatsApp
-    window.open(whatsappUrl, '_blank');
-    
-    // Reset form
-    this.reset();
-    
-    // Show success message
-    alert('Mensaje enviado. Te redirigiremos a WhatsApp para completar el contacto.');
-});
+    const form = e.target;
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoader = submitBtn.querySelector('.btn-loader');
 
-// Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+    // Mostrar loader y deshabilitar botón
+    btnText.style.display = 'none';
+    btnLoader.style.display = 'inline-block';
+    submitBtn.disabled = true;
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+        const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || 'Ocurrió un error en el servidor.');
         }
-    });
-}, observerOptions);
 
-// Observe elements for animation
-document.querySelectorAll('.product-card, .service-card, .blog-card, .location-card').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-});
+        document.getElementById('success-modal').style.display = 'flex';
+        form.reset();
 
-// Header scroll effect
-window.addEventListener('scroll', function() {
-    const header = document.querySelector('header');
-    if (window.scrollY > 100) {
-        header.style.background = 'rgba(26, 26, 46, 0.95)';
-        header.style.backdropFilter = 'blur(10px)';
-    } else {
-        header.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)';
-        header.style.backdropFilter = 'none';
+    } catch (error) {
+        alert(`Error al enviar el mensaje: ${error.message}`);
+    } finally {
+        // Ocultar loader y habilitar botón
+        btnText.style.display = 'inline-block';
+        btnLoader.style.display = 'none';
+        submitBtn.disabled = false;
     }
-});
-
-// Product card hover effects
-document.querySelectorAll('.product-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-10px) scale(1.02)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-    });
-});
-
-// Service card animations
-document.querySelectorAll('.service-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        const icon = this.querySelector('.service-icon i');
-        icon.style.transform = 'scale(1.2) rotate(5deg)';
-        icon.style.transition = 'transform 0.3s ease';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        const icon = this.querySelector('.service-icon i');
-        icon.style.transform = 'scale(1) rotate(0deg)';
-    });
-});
-
-// Blog card click handlers
-document.querySelectorAll('.blog-card').forEach(card => {
-    card.addEventListener('click', function() {
-        const title = this.querySelector('.blog-title').textContent;
-        alert(`Próximamente: ${title}`);
-    });
-});
-
-// Location card map interaction
-document.querySelectorAll('.map-placeholder').forEach(map => {
-    map.addEventListener('click', function() {
-        const locationCard = this.closest('.location-card');
-        const locationName = locationCard.querySelector('h3').textContent;
-        
-        if (locationName.includes('Principal')) {
-            window.open('https://maps.google.com/?q=Higüey,+La+Altagracia,+Dominican+Republic', '_blank');
-        } else if (locationName.includes('Punta Cana')) {
-            window.open('https://maps.google.com/?q=Punta+Cana,+Dominican+Republic', '_blank');
-        }
-    });
-});
-
-// Dynamic content loading simulation
-function loadPromotions() {
-    const promotions = [
-        {
-            title: "Descuento Especial Julio",
-            description: "15% de descuento en todas las motocicletas deportivas",
-            date: "Válido hasta el 31 de Julio"
-        },
-        {
-            title: "Financiamiento Sin Inicial",
-            description: "Llévate tu motocicleta sin inicial en modelos seleccionados",
-            date: "Promoción limitada"
-        },
-        {
-            title: "Servicio Técnico Gratis",
-            description: "Primer servicio gratuito con la compra de cualquier motocicleta",
-            date: "Aplica términos y condiciones"
-        }
-    ];
-    
-    // This would normally load from a CMS or database
-    console.log('Promotions loaded:', promotions);
 }
 
-// Initialize page
-document.addEventListener('DOMContentLoaded', function() {
-    loadPromotions();
-    
-    // Add loading animation
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.5s ease';
-    
-    setTimeout(() => {
-        document.body.style.opacity = '1';
-    }, 100);
-});
+function setupEventListeners() {
+    // Menú móvil
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const navLinks = document.querySelector('.nav-links');
+    mobileMenuButton.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
 
-// Performance optimization
-const lazyImages = document.querySelectorAll('[data-src]');
-const imageObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const img = entry.target;
-            img.src = img.dataset.src;
-            img.removeAttribute('data-src');
-            imageObserver.unobserve(img);
+    // Filtros de productos
+    document.querySelectorAll('.filter-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            document.querySelector('.filter-btn.active').classList.remove('active');
+            button.classList.add('active');
+            const category = button.dataset.category;
+            fetchAndDisplayProducts(category, document.getElementById('search-input').value);
+        });
+    });
+
+    // Búsqueda de productos
+    const searchBtn = document.getElementById('search-btn');
+    const searchInput = document.getElementById('search-input');
+    searchBtn.addEventListener('click', () => {
+        const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
+        fetchAndDisplayProducts(activeCategory, searchInput.value);
+    });
+    searchInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            searchBtn.click();
         }
     });
-});
 
-lazyImages.forEach(img => imageObserver.observe(img));
+    // Formulario de contacto
+    const contactForm = document.getElementById('contact-form');
+    contactForm.addEventListener('submit', handleFormSubmit);
 
-// Contact form validation
-const inputs = document.querySelectorAll('input, textarea');
-inputs.forEach(input => {
-    input.addEventListener('blur', function() {
-        if (this.hasAttribute('required') && !this.value.trim()) {
-            this.style.borderColor = '#ff4757';
+    // Cerrar el modal de éxito
+    const closeModalButton = document.querySelector('.close-modal');
+    closeModalButton.addEventListener('click', () => {
+        document.getElementById('success-modal').style.display = 'none';
+    });
+    window.addEventListener('click', (e) => {
+        if (e.target == document.getElementById('success-modal')) {
+            document.getElementById('success-modal').style.display = 'none';
+        }
+    });
+
+    // Efecto de scroll en el header
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 50) {
+            header.classList.add('header-scrolled');
         } else {
-            this.style.borderColor = '#e1e5e9';
+            header.classList.remove('header-scrolled');
         }
     });
-    
-    input.addEventListener('focus', function() {
-        this.style.borderColor = '#ff6b35';
+}
+
+function setupIntersectionObserver() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in-up');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Aplicar a todas las tarjetas que deben animarse
+    document.querySelectorAll('.product-card, .service-card, .blog-card, .location-card').forEach(el => {
+        observer.observe(el);
     });
-});
-
-// Search functionality (for future implementation)
-function searchProducts(query) {
-    // This would integrate with a product database
-    console.log('Searching for:', query);
-}
-
-// Newsletter subscription (placeholder)
-function subscribeNewsletter(email) {
-    // This would integrate with an email service
-    console.log('Newsletter subscription:', email);
-    alert('¡Gracias por suscribirte a nuestro newsletter!');
-}
-
-// Social media integration
-function shareOnSocial(platform, url, text) {
-    let shareUrl = '';
-    const encodedUrl = encodeURIComponent(url);
-    const encodedText = encodeURIComponent(text);
-    
-    switch(platform) {
-        case 'facebook':
-            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
-            break;
-        case 'twitter':
-            shareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`;
-            break;
-        case 'whatsapp':
-            shareUrl = `https://wa.me/?text=${encodedText} ${encodedUrl}`;
-            break;
-    }
-    
-    if (shareUrl) {
-        window.open(shareUrl, '_blank', 'width=600,height=400');
-    }
 }
