@@ -17,10 +17,10 @@ header {
     position: fixed;
     top: 0;
     width: 100%;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    background: linear-gradient(135deg, #373737b0 0%, #272727b0 100%);
     z-index: 1000;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.034);
 }
 
 nav {
@@ -62,7 +62,7 @@ nav {
 }
 
 .logo-text {
-    background: linear-gradient(135deg, #ff3030, #ffffffc9);
+    background: linear-gradient(135deg, #ff4c4c, #b5b5b5ec);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -138,7 +138,7 @@ nav {
         position: absolute;
         top: 70px; /* Altura del header */
         left: 0;
-        background-color: #1a1a2e; /* Mismo color de fondo del header */
+        background: linear-gradient(135deg, #373737b0 0%, #272727b0 100%); /* Mismo color de fondo del header */
         padding: 1rem 0;
     }
 
@@ -169,7 +169,7 @@ nav {
 /* Hero Section */
 .hero {
     height: 100vh;
-    background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9)), 
+    background: linear-gradient(135deg, rgba(11, 7, 7, 0.9), rgba(28, 10, 10, 0.9)), 
                 url('hero-bg.jpg') center/cover;
     display: flex;
     align-items: center;
@@ -285,7 +285,7 @@ section {
     left: 50%;
     width: 60px;
     height: 4px;
-    background: linear-gradient(135deg, #f72121, #f3bebe);
+    background: linear-gradient(135deg, #ff1a1ae9, #777777);
     transform: translateX(-50%);
     border-radius: 2px;
 }
@@ -447,7 +447,7 @@ section {
 
 .product-image {
     height: 250px;
-    background: linear-gradient(135deg, #ff6b35, #ff8c42);
+    background: linear-gradient(135deg, #ff3535, #ff5a5a);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -488,7 +488,7 @@ section {
 .product-price {
     font-size: 1.4rem;
     font-weight: bold;
-    color: #ff6b35;
+    color: #1b1b1b;
     margin-bottom: 1rem;
 }
 
@@ -664,7 +664,7 @@ section {
 
 .blog-image {
     height: 200px;
-    background: linear-gradient(135deg, #500000, #002b63);
+    background: linear-gradient(135deg, #840000e1, #626262);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -723,7 +723,7 @@ section {
 .location-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.321);
-    border-color: #1a1a2e;
+    border-color: #232323;
 }
 
 .location-card h3 {
@@ -802,7 +802,7 @@ section {
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
-    color: #1a1a2e;
+    color: #242424;
     font-weight: 500;
 }
 
@@ -821,8 +821,8 @@ section {
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-    outline: rgb(28, 28, 62)00;
-    border-color: #001240;
+    outline: rgb(65, 65, 65)00;
+    border-color: #121212;
     box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
@@ -836,7 +836,7 @@ section {
 
 /* Contact Info */
 .contact-info {
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    background: linear-gradient(135deg, #290f0f, #6e4b4b);
     color: white;
     padding: 2.5rem;
     border-radius: 20px;
@@ -872,7 +872,7 @@ section {
 .contact-item i {
     font-size: 1.3rem;
     margin-right: 1rem;
-    color: #ff6b35;
+    color: #8e8e8e;
     margin-top: 0.2rem;
     min-width: 20px;
 }
@@ -904,10 +904,10 @@ section {
 
 /* Footer */
 footer {
-    background: #1a1a2e;
+    background: #333333;
     color: white;
     text-align: center;
-    padding: 4rem 0 2rem;
+    padding: 0.5rem 0 1rem; /* Padding reducido */
 }
 
 .footer-content {
@@ -919,8 +919,8 @@ footer {
 .footer-links {
     display: flex;
     justify-content: center;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 1.5rem; /* También puedes reducir el espacio entre los enlaces */
+    margin-bottom: 0.4rem; /* Margen inferior reducido */
     flex-wrap: wrap;
 }
 
@@ -937,6 +937,8 @@ footer {
     background: rgba(254, 237, 237, 0.119);
 }
 
+
+/* --- ESTILOS GENERALES PARA TODOS LOS ÍCONOS --- */
 .social-links {
     display: flex; /* Esto los pone en fila */
     justify-content: center; /* Opcional: Centra los íconos horizontalmente */
@@ -1017,6 +1019,7 @@ footer {
     background: #ff0000;
     box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
 }
+
 /* Loading Spinner */
 .loading-spinner {
     position: fixed;
@@ -1089,7 +1092,7 @@ footer {
 }
 
 .close-modal:hover {
-    color: #ff6b35;
+    color: #f93a3a;
 }
 
 .modal-icon {
@@ -1122,7 +1125,7 @@ footer {
 }
 
 .header-scrolled {
-    background: rgba(26, 26, 46, 0.95) !important;
+    background: #333333bd !important;
     backdrop-filter: blur(10px);
 }
 
@@ -1325,11 +1328,10 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #ff6b35;
+    background: #4a4a4a;
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #ff8c42;
+    background: #555555;
 }
-
