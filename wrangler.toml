@@ -1,0 +1,8 @@
+name = "catalogo_db"
+main = "worker-app.js"
+compatibility_date = "2023-08-01"
+
+[d1_databases]
+binding = "DB",
+database_name = "catalogo_db",
+database_id = "4966ff26-ed00-432d-a6ac-7232a6bf7d05"

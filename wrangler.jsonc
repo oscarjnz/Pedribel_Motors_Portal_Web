@@ -1,0 +1,5 @@
+{
+  "name": "dealer-portal-api",
+  "main": "src/index.js",
+  "compatibility_date": "2025-08-13"
+}
