@@ -4,7 +4,9 @@ import { json } from 'itty-router/json';
 // Crea un router
 const router = Router();
 
-// Ruta para obtener productos
+// ---------------------------
+// Ruta: /api/products
+// ---------------------------
 router.get('/api/products', async (request) => {
     try {
         const { searchParams } = new URL(request.url);
@@ -25,7 +27,6 @@ router.get('/api/products', async (request) => {
             queryParams.push(searchTerm, searchTerm, searchTerm);
         }
         
-        // Ejecuta la consulta usando D1
         const { results } = await request.env.DB.prepare(query)
             .bind(...queryParams)
             .all();
@@ -38,21 +39,29 @@ router.get('/api/products', async (request) => {
     }
 });
 
-
-
-
-// Ruta para manejar el formulario de contacto
+// ---------------------------
+// Ruta: /api/contact
+// ---------------------------
 router.post('/api/contact', async (request) => {
-    // Aquí puedes integrar un servicio de email como SendGrid o usar la API de MailChannels
-    // para enviar el email, ya que nodemailer no es compatible con Cloudflare Workers.
-    // Cloudflare MailChannels es la opción más sencilla.
-    // ...
-    // Placeholder para la lógica de contacto
+    // Lógica para enviar emails con MailChannels o similar
     return json({ message: '¡Mensaje enviado con éxito!' });
 });
 
+// ---------------------------
+// Ruta para servir fotos desde R2
+// ---------------------------
+router.get('/foto/:nombre', async (request) => {
+  try {
+    const { nombre } = request.params; // nombre de la foto, ej: honda_cbr500.jpg
+    const foto = await request.env.FOTOS.get(`x1000/${nombre}`);
 
-// Asigna el router al evento fetch
-export default {
-    fetch: router.handle,
-};
+    if (!foto) return new Response("Imagen no encontrada", { status: 404 });
+
+    return new Response(foto.body, {
+      headers: { "content-type": foto.httpMetadata.contentType }
+    });
+  } catch (error) {
+    console.error('Error al obtener foto:', error);
+    return new Response("Error interno al obtener la foto", { status: 500 });
+  }
+});
