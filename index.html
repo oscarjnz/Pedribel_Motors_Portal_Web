@@ -261,13 +261,19 @@
                         <span class="error-message"></span>
                     </div>
                     
-                    <button type="submit" class="cta-button" id="submit-btn">
+                    <input type="submit" class="cta-button" id="submit-btn">
                         <span class="btn-text">Enviar Mensaje</span>
                         <span class="btn-loader" style="display: none;">
                             <i class="fas fa-spinner fa-spin"></i> Enviando...
                         </span>
-                    </button>
+                    </input>
                 </form>
+                <script type="text/javascript"
+                  src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+                
+                <script type="text/javascript">
+                  emailjs.init('W6upvoJvZsRctakm-')
+                </script>
             </div>
             
             <div class="contact-info">
