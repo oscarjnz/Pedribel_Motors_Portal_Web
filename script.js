@@ -145,6 +145,7 @@ function setupEventListeners() {
         }
     });
 
+    //Formulario de mensajes
     const btn = document.getElementById('submit-btn');
     
     document.getElementById('contact-form')
@@ -159,7 +160,7 @@ function setupEventListeners() {
        emailjs.sendForm(serviceID, templateID, this)
         .then(() => {
           btn.value = 'Enviar Email';
-          alert('Sent!');
+          alert('Enviado!');
         }, (err) => {
           btn.value = 'Enviar Email';
           alert(JSON.stringify(err));
@@ -196,4 +197,5 @@ function setupIntersectionObserver() {
         observer.observe(el);
     });
 }
+
 
