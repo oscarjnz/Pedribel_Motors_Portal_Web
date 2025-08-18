@@ -159,22 +159,22 @@ function setupEventListeners() {
     const btn = document.getElementById('submit-btn');
 
     document.getElementById('contact-form')
-        .addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            btn.value = 'Enviando...';
-
-            const serviceID = 'default_service';
-            const templateID = 'template_kgh1w9x';
-
-            emailjs.sendForm(serviceID, templateID, this)
-                .then(() => {
-                    btn.value = 'Enviar Email';
-                    alert('Enviado!');
-                }, (err) => {
-                    btn.value = 'Enviar Email';
-                    alert(JSON.stringify(err));
-                });
+    .addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        btn.value = 'Enviando...';
+        
+        const serviceID = 'default_service';
+        const templateID = 'template_kgh1w9x';
+        
+        emailjs.sendForm(serviceID, templateID, this)
+        .then(() => {
+            btn.value = 'Enviar Email';
+            alert('Enviado!');
+        }, (err) => {
+            btn.value = 'Enviar Email';
+            alert(JSON.stringify(err));
+        });
     });
 }
 
@@ -197,6 +197,7 @@ function setupIntersectionObserver() {
         observer.observe(el);
     });
 }
+
 
 
 
