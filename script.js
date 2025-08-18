@@ -149,7 +149,7 @@ function setupEventListeners() {
     const btn = document.getElementById('submit-btn');
     
     document.getElementById('contact-form')
-     .addEventListener('submit', function(event) {
+     .addEventListener('enviar', function(event) {
        event.preventDefault();
     
        btn.value = 'Enviando...';
@@ -197,5 +197,6 @@ function setupIntersectionObserver() {
         observer.observe(el);
     });
 }
+
 
 
