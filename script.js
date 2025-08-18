@@ -114,6 +114,28 @@ async function handleFormSubmit(e) {
     }
 }
 
+//Formulario de mensajes
+const btn = document.getElementById('submit-btn');
+
+document.getElementById('contact-form')
+ .addEventListener('submit', function(event) {
+   event.preventDefault();
+
+   btn.value = 'Enviando...';
+
+   const serviceID = 'default_service';
+   const templateID = 'template_kgh1w9x';
+
+   emailjs.sendForm(serviceID, templateID, this)
+    .then(() => {
+      btn.value = 'Enviar Email';
+      alert('Enviado!');
+    }, (err) => {
+      btn.value = 'Enviar Email';
+      alert(JSON.stringify(err));
+    });
+});
+
 function setupEventListeners() {
     // Menú móvil
     const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -144,29 +166,7 @@ function setupEventListeners() {
             searchBtn.click();
         }
     });
-
-    //Formulario de mensajes
-    const btn = document.getElementById('submit-btn');
     
-    document.getElementById('contact-form')
-     .addEventListener('submit', function(event) {
-       event.preventDefault();
-    
-       btn.value = 'Enviando...';
-    
-       const serviceID = 'default_service';
-       const templateID = 'template_kgh1w9x';
-    
-       emailjs.sendForm(serviceID, templateID, this)
-        .then(() => {
-          btn.value = 'Enviar Email';
-          alert('Enviado!');
-        }, (err) => {
-          btn.value = 'Enviar Email';
-          alert(JSON.stringify(err));
-        });
-    });
-
     // Efecto de scroll en el header
     window.addEventListener('scroll', () => {
         const header = document.querySelector('header');
@@ -197,6 +197,7 @@ function setupIntersectionObserver() {
         observer.observe(el);
     });
 }
+
 
 
 
