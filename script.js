@@ -145,19 +145,25 @@ function setupEventListeners() {
         }
     });
 
-    // Formulario de contacto
-    const contactForm = document.getElementById('contact-form');
-    contactForm.addEventListener('submit', handleFormSubmit);
-
-    // Cerrar el modal de éxito
-    const closeModalButton = document.querySelector('.close-modal');
-    closeModalButton.addEventListener('click', () => {
-        document.getElementById('success-modal').style.display = 'none';
-    });
-    window.addEventListener('click', (e) => {
-        if (e.target == document.getElementById('success-modal')) {
-            document.getElementById('success-modal').style.display = 'none';
-        }
+    const btn = document.getElementById('submit-btn');
+    
+    document.getElementById('contact-form')
+     .addEventListener('submit', function(event) {
+       event.preventDefault();
+    
+       btn.value = 'Enviando...';
+    
+       const serviceID = 'default_service';
+       const templateID = 'template_kgh1w9x';
+    
+       emailjs.sendForm(serviceID, templateID, this)
+        .then(() => {
+          btn.value = 'Enviar Email';
+          alert('Sent!');
+        }, (err) => {
+          btn.value = 'Enviar Email';
+          alert(JSON.stringify(err));
+        });
     });
 
     // Efecto de scroll en el header
@@ -191,23 +197,3 @@ function setupIntersectionObserver() {
     });
 }
 
-const btn = document.getElementById('button');
-
-document.getElementById('form')
- .addEventListener('submit', function(event) {
-   event.preventDefault();
-
-   btn.value = 'Sending...';
-
-   const serviceID = 'default_service';
-   const templateID = 'template_kgh1w9x';
-
-   emailjs.sendForm(serviceID, templateID, this)
-    .then(() => {
-      btn.value = 'Send Email';
-      alert('Sent!');
-    }, (err) => {
-      btn.value = 'Send Email';
-      alert(JSON.stringify(err));
-    });
-});
