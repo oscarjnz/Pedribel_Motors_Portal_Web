@@ -51,7 +51,7 @@ nav {
 }
 
 .logo-img {
-    height: 45px;
+    height: 68px;
     width: auto;
     border-radius: 8px;
     transition: all 0.3s ease;
@@ -1335,3 +1335,4 @@ html {
 ::-webkit-scrollbar-thumb:hover {
     background: #555555;
 }
+
