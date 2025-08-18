@@ -169,10 +169,10 @@ function setupEventListeners() {
         
         emailjs.sendForm(serviceID, templateID, this)
         .then(() => {
-            btn.value = 'Enviar Email';
+            btn.value = 'Enviar';
             alert('Enviado!');
         }, (err) => {
-            btn.value = 'Enviar Email';
+            btn.value = 'Enviar';
             alert(JSON.stringify(err));
         });
     });
@@ -197,6 +197,7 @@ function setupIntersectionObserver() {
         observer.observe(el);
     });
 }
+
 
 
 
