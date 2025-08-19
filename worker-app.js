@@ -53,7 +53,7 @@ router.post('/api/contact', async (request) => {
 router.get('/foto/:nombre', async (request) => {
   try {
     const { nombre } = request.params; // nombre de la foto, ej: honda_cbr500.jpg
-    const foto = await request.env.FOTOS.get(`x1000/${nombre}`);
+    const foto = await request.env.catalogo_db.get(`x1000/${nombre}`);
 
     if (!foto) return new Response("Imagen no encontrada", { status: 404 });
 
@@ -65,3 +65,4 @@ router.get('/foto/:nombre', async (request) => {
     return new Response("Error interno al obtener la foto", { status: 500 });
   }
 });
+
