@@ -1,16 +1,22 @@
 export default {
   async fetch(request, env) {
-    const url = new URL(request.url);
+    const { pathname } = new URL(request.url);
 
-    if (url.pathname === "/motos") {
-      // Consultar todas las motos
-      const { results } = await env.DB.prepare("SELECT * FROM motos").all();
-
+    if (pathname === "/api/x1000") {
+      // If you did not use `DB` as your binding name, change it here
+      const { results } = await env.catalogo_db.prepare(
+        "SELECT * FROM Productos WHERE Marca = ?"
+      )
+        .bind("X1000")
+        .run();
       return new Response(JSON.stringify(results), {
-        headers: { "content-type": "application/json; charset=utf-8" }
+        headers: { 'Content-Type': 'application/json' }
       });
     }
 
-    return new Response("Ruta no encontrada", { status: 404 });
-  }
+    return new Response(
+      "Call /api/beverages to see everyone who works at X1000"
+    );
+  },
 };
+
