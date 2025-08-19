@@ -50,9 +50,16 @@ nav {
     color: #ff353569;
 }
 
-.logo-img {
-    height: 68px;
+.logo1-img {
+    height: 45px;
     width: auto;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.logo2-img {
+    height: 536px;
+    width: 400px;
     border-radius: 8px;
     transition: all 0.3s ease;
 }
@@ -1335,4 +1342,5 @@ html {
 ::-webkit-scrollbar-thumb:hover {
     background: #555555;
 }
+
 
