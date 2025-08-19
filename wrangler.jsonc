@@ -1,5 +1,24 @@
 {
-  "name": "pedribel-motors",
-  "main": "src/index.js",
-  "compatibility_date": "2025-08-13"
+  "d1_databases": [  
+    {  
+      "binding": "DB",  
+      "database_name": "catalogo_db",  
+      "database_id": "50e74ad8-f7fd-467e-958e-4280a9788e9c"  
+    }  
+  ],
+
+  "r2_buckets": [
+    {
+      "binding": "pedribel_motors",
+      "bucket_name": "pedribel-motors"
+    }
+  ],
+
+  "secrets_store_secrets": [  
+  {  
+    "store_id": "785fa34582404721abbb82a92956552b",  
+    "binding": "SECRET",  
+    "secret_name": "<YOUR-SECRETS-NAME>"
+  }  
+]
 }
