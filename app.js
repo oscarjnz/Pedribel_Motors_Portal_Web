@@ -1,10 +1,16 @@
-const express = require('express');
-const nodemailer = require('nodemailer');
-const cors = require('cors');
-const path = require('path');
-const rateLimit = require('express-rate-limit');
-const mysql = require('mysql2/promise'); // Importa mysql2 con promesas
-require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import rateLimit from 'express-rate-limit';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,11 +19,9 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Servir archivos estáticos (HTML, CSS, JS del frontend)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Rate limiting para proteger contra ataques de fuerza bruta y spam
+// Rate limiting
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
@@ -25,6 +29,36 @@ const apiLimiter = rateLimit({
     legacyHeaders: false,
 });
 app.use('/api/', apiLimiter);
+
+R2_BUCKET = 'pedribel-motors',
+R2_ENDPOINT = ''
+
+// Configuración de cliente S3 (R2)
+const s3 = new S3Client({
+  region: process.env.REGION || 'auto',
+  endpoint: process.env.R2_ENDPOINT,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY
+  },
+  forcePathStyle: false,
+});
+
+// Ruta para servir imágenes desde R2
+app.get('/foto/:nombre', async (req, res) => {
+  const key = `x1000/${req.params.nombre}`;
+  try {
+    const cmd = new GetObjectCommand({ Bucket: process.env.R2_BUCKET, Key: key });
+    const data = await s3.send(cmd);
+
+    if (data.ContentType) res.setHeader('Content-Type', data.ContentType);
+    const stream = data.Body;
+    stream.pipe(res);
+  } catch (err) {
+    console.error('Error proxy R2 ->', err);
+    res.status(404).send('Imagen no encontrada');
+  }
+});
 
 // --- RUTAS DE LA API ---
 
@@ -55,15 +89,10 @@ app.get('/api/products', async (req, res) => {
     }
 });
 
-// Ruta para manejar el formulario de contacto (sin cambios, ya que está bien)
-app.post('/api/contact', async (req, res) => {
-    // ... (El código de la ruta de contacto se mantiene igual)
-});
-
-// Ruta principal para servir el frontend (sin cambios, ya que está bien)
-app.get('*', (req, res) => {
-    // ... (El código de la ruta principal se mantiene igual)
-});
+// // Ruta principal para servir el frontend
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
