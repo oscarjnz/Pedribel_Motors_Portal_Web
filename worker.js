@@ -7,6 +7,9 @@ export default {
         "SELECT id, Marca, Modelo, Precio, Descripcion, anio, imagen_url FROM motos"
       ).all();
 
+      
+      console.log(results);
+      console.log("Products fetched successfully");
       // Transformar datos de la DB al formato que tu frontend espera
       const products = results.map(row => ({
         name: `${row.Marca} ${row.Modelo}`,
@@ -16,6 +19,9 @@ export default {
         year: row.anio,
         image: `${env.pedribel_motors_url}/${row.imagen_url}` //  armamos la URL de R2
       }));
+
+      console.log(products);
+      console.log("Products fetched successfully");
 
       return new Response(JSON.stringify(products), {
         headers: { "Content-Type": "application/json" },
